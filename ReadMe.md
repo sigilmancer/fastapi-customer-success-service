@@ -1,6 +1,6 @@
 # Micro-Service: Internal Operations Automation Engine (FastAPI)
 
-[![Continuous Integration](https://github.com/sigilmancer/fastapi-customer-success-service/blob/main/.github/workflows/ci.yml/badge.svg)](https://github.com/sigilmancer/fastapi-customer-success-service/blob/main/.github/workflows/ci.yml)
+[![Continuous Integration](https://github.com/sigilmancer/fastapi-customer-success-service/actions/workflows/ci.yml/badge.svg)](https://github.com/sigilmancer/fastapi-customer-success-service/actions/workflows/ci.yml)
 
 A lightweight, asynchronous internal service built with **Python (FastAPI)** and **Pydantic** designed to showcase modern, type-safe API automation workflows for internal customer success operations.
 
