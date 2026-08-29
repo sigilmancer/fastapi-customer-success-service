@@ -34,14 +34,11 @@ jobs:
 
     - name: Open Tracking Ticket on Failure
       if: failure()
-      uses: actions-ecosystem/action-create-issue@v1
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        title: "automated CI Build Failure on main"
-        labels: bug, automated-ci
-        body: |
-          ### Test Suite execution failure
-          
-          The integration tests failed during runtime on the latest push. 
-          
-          Inspect the **Actions logs** to determine the failing assertion and push a repair commit to clear this block.
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        gh issue create \
+          --title "CI Pipeline failed on [${{ github.ref_name }}]" \
+          --assignee "${{ github.actor }}" \
+          --label "bug" \
+          --body "The test suite has failed during runtime execution. Please check your repository Actions log tab to isolate and repair the failing test assertion."
