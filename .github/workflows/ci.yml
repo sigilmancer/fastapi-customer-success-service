@@ -6,25 +6,48 @@ on:
   pull_request:
     branches: [main]
 
+permissions:
+  contents: read
+  issues: write
+
 jobs:
   test:
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout Repository
-      uses: actions/checkout@vs
+      uses: actions/checkout@v4
 
     - name: Set up Python Runtime
       uses: actions/setup-python@v5
       with: 
         python-version: '3.11'
     
-    -name: Install Dependencies
+    - name: Install Dependencies
      run: |
         python -m pip install --upgrade pip
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
         pip install pytest httpx
 
-    -name: Run Test Suite
-     run: |
-       python -m pytest -v
+    - name: Run Test Suite
+     run: python -m pytest -v
+
+    - name: File ticket on failure
+      if: failure()
+      uses: dacbd/create-issue-action@main
+      with: 
+        token: ${{ github.token }}
+        title: "CI pipeline failed on [${{ github.ref_name }}]"
+        assignees: ${{ github.actor }}
+        labels: |
+          bug
+          automated-alert
+        body: |
+          ## CI breakdown
+          Automated test suite has failed on branch `__${{ github.ref_name }}__`
+
+          * **Triggered by:** @${{ github.actor }}
+          * **Commit SHA:** ${{ github.sha }}
+          * **Logs & execution details:** [View failed run logs](https://github.com/${{ github.repository}}/actions/runs/${{ github.run_id}})
+
+          _check attached execution run link above, identify failing test cases and push a resolution._
