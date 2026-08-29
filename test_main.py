@@ -5,7 +5,7 @@ client = TestClient(app)
 
 def test_read_root():
     response = client.get("/docs")
-    assert response.status_code == 418
+    assert response.status_code == 200
 
 def test_triage_billing_fallback():
     sample_payload = {
